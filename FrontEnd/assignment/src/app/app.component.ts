@@ -12,9 +12,8 @@ export class AppComponent implements OnInit {
   employees: any;
   employeeForm: boolean;
   isNewEmployee: boolean;
-  newEmployee: any = {};
-  editEmployeeForm: boolean;
-  editedEmployee: any = {};
+  employee: any = {};
+  submitted = false;
 
   constructor(private employeeService: EmployeeService) { }
 
@@ -36,23 +35,21 @@ export class AppComponent implements OnInit {
   }
 
   showEditEmployeeForm(employee: Employee) {
+    debugger;
     if (!employee) {
       this.employeeForm = false;
       return;
     }
-    this.editEmployeeForm = true;
-    this.editedEmployee = employee;
+    this.employeeForm = true;
+    this.employee = employee;
   }
 
   showAddEmployeeForm() {
-    this.newEmployee = {};
+    this.employee = {};
     this.employeeForm = true;
-    this.isNewEmployee = true;
-
   }
 
   saveEmployee(employee: Employee) {
-    if (this.isNewEmployee) {
       try {
         this.employeeService.addEmployee(employee).subscribe((response: any)=>{
             alert(response.message);
@@ -65,27 +62,16 @@ export class AppComponent implements OnInit {
         alert('catech ===== ' + error);
         
       }
-    }
     this.employeeForm = false;
   }
 
-  updateEmployee() {
-    this.saveEmployee(this.editedEmployee);
-    this.editEmployeeForm = false;
-    this.editedEmployee = {};
+  addNewEmployee(employee: Employee){
+    this.submitted = true;
+    this.saveEmployee(employee);
   }
 
-  // removeEmployee(employee: Employee) {
-  //   this.employeeService.deleteEmployee(employee);
-  // }
-
-  cancelEdits() {
-    this.editedEmployee = {};
-    this.editEmployeeForm = false;
-  }
-
-  cancelNewEmployee() {
-    this.newEmployee = {};
+  cancelEmployee() {
+    this.employee = {};
     this.employeeForm = false;
   }
 
