@@ -30,19 +30,19 @@ ng serve -o
 #### demo image
 
 ##### Employee list
-
+![alt text](https://github.com/BalaPatil92/Angular8_WebAPI_MSSQL/blob/main/Images/EmployeeList.png)
 
 ##### New Employee
-
+![alt text](https://github.com/BalaPatil92/Angular8_WebAPI_MSSQL/blob/main/Images/NewEmployee.png)
 
 ##### Employee validation
-
+![alt text](https://github.com/BalaPatil92/Angular8_WebAPI_MSSQL/blob/main/Images/NewEmployeeValiadation.png)
 
 ##### Edit Employee
-
+![alt text](https://github.com/BalaPatil92/Angular8_WebAPI_MSSQL/blob/main/Images/EditEmployee.png)
 
 ##### Video demo
-
+![alt text](http://srecorder.com/s/jy7m)
 
 
 
