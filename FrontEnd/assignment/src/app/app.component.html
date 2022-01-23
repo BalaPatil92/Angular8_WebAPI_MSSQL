@@ -6,156 +6,257 @@
         <thead>
           <tr>
             <th class="text-center">Code</th>
-            <th class="text-center"> Name</th>
-            <th class="text-center"> Gender</th>
-            <th class="text-center"> Department</th>
-            <th class="text-center"> Joining Date</th>
-            <th class="text-center"> Salary</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Gender</th>
+            <th class="text-center">Department</th>
+            <th class="text-center">Joining Date</th>
+            <th class="text-center">Salary</th>
             <th class="text-center">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of employees">
-            <td>{{ employee.employeeCode }}</td>
-            <td>{{ employee.name }}</td>
-            <td>{{ employee.gender }}</td>
-            <td>{{ employee.department }}</td>
-            <td>{{ employee.joiningDate }}</td>
-            <td>{{ employee.salary }}</td>
+          <tr *ngFor="let emp of employees">
+            <td>{{ emp.employeeCode }}</td>
+            <td>{{ emp.name }}</td>
+            <td>{{ emp.gender }}</td>
+            <td>{{ emp.department }}</td>
+            <td>{{ emp.joiningDate }}</td>
+            <td>{{ emp.salary }}</td>
 
             <td>
-              <button type="button" class="btn btn-info btn-sm mr-2" (click)="showEditEmployeeForm(employee)">Edit</button>
-
-              <!-- <button type="button" class="btn btn-danger btn-sm" (click)="removeEmployee(employee)">Delete</button> -->
+              <button
+                type="button"
+                class="btn btn-info btn-sm mr-2"
+                (click)="showEditEmployeeForm(emp)"
+              >
+                Edit
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <button class="btn btn-success" (click)="showAddEmployeeForm()">Add New Employee</button>
+      <button class="btn btn-success" (click)="showAddEmployeeForm()">
+        Add New Employee
+      </button>
 
-      <br><br><br>
+      <br /><br /><br />
       <div class="row">
         <div class="col-md-6 mt-6">
-          <form *ngIf="employeeForm">
+          <form
+            name="newForm"
+            *ngIf="employeeForm"
+            (ngSubmit)="newForm.form.valid && addNewEmployee(employee)"
+            #newForm="ngForm"
+          >
             <div class="form-group">
               <label for="employeeCode">Emp Code</label>
-              <input type="text" class="form-control" [(ngModel)]="newEmployee.employeeCode" [ngModelOptions]="{standalone: true}" id="employeeCode"  placeholder="Employee Code">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="employee.employeeCode"
+                [ngModelOptions]="{ standalone: true }"
+                id="employeeCode"
+                placeholder="Employee Code"
+                #employeeCode="ngModel"
+                [ngClass]="{
+                  'is-invalid': employeeCode.touched && employeeCode.invalid
+                }"
+                required
+              />
+            </div>
+            <div
+              [hidden]="employeeCode.valid || employeeCode.pristine"
+              class="alert alert-danger"
+            >
+              Emp Code is required
             </div>
             <div class="form-group">
               <label for="name"> Name</label>
-              <input type="text" class="form-control" [(ngModel)]="newEmployee.name" [ngModelOptions]="{standalone: true}" id="name" placeholder="Employee name">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="employee.name"
+                [ngModelOptions]="{ standalone: true }"
+                id="name"
+                placeholder="Employee name"
+                #name="ngModel"
+                [ngClass]="{ 'is-invalid': name.touched && name.invalid }"
+                required
+              />
+            </div>
+            <div
+              [hidden]="name.valid || name.pristine"
+              class="alert alert-danger"
+            >
+              name is required
             </div>
             <div class="form-group">
               <label for="department">Example Department</label>
-              <select class="form-control" [(ngModel)]="newEmployee.department" [ngModelOptions]="{standalone: true}" id="department">
+              <select
+                class="form-control"
+                [(ngModel)]="employee.department"
+                [ngModelOptions]="{ standalone: true }"
+                id="department"
+                #department="ngModel"
+                [ngClass]="{
+                  'is-invalid': department.touched && department.invalid
+                }"
+                required
+              >
                 <option>Admin</option>
                 <option>Technology</option>
                 <option>Accounts</option>
                 <option>Development</option>
               </select>
             </div>
-            <div class="form-group">
-              <label for="name"> Gender</label>
-              <div class="form-check">
-                <input class="form-check-input" [(ngModel)]="newEmployee.gender" [ngModelOptions]="{standalone: true}" type="radio" name="exampleRadios" id="male" value="male" checked>
-                <label class="form-check-label" for="male">
-                  Male
-                </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input class="form-check-input" [(ngModel)]="newEmployee.gender" [ngModelOptions]="{standalone: true}" type="radio" name="exampleRadios" id="female" value="female">
-                <label class="form-check-label" for="female">
-                  Female
-                </label>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="name"> DOB</label>
-              <input type="date" class="form-control" [(ngModel)]="newEmployee.dob" [ngModelOptions]="{standalone: true}" id="dob" placeholder="Employe DOB">
-            </div>
-            <div class="form-group">
-              <label for="name"> Joining Date</label>
-              <input type="date" class="form-control" [(ngModel)]="newEmployee.joiningDate" [ngModelOptions]="{standalone: true}" id="joiningDate" placeholder="Joining Date">
-            </div>
-            <div class="form-group">
-              <label for="previousExprience"> Previous Experience</label>
-              <input type="number" class="form-control" [(ngModel)]="newEmployee.previousExprience" [ngModelOptions]="{standalone: true}" id="previousExprience" placeholder="Previous Experience">
-            </div>
-  
-            <div class="form-group">
-              <label for="name"> Salary</label>
-              <input type="number" class="form-control" id="salary" [(ngModel)]="newEmployee.salary" [ngModelOptions]="{standalone: true}" placeholder="salary">
-            </div>
-  
-            <div class="form-group">
-              <label for="address">Address</label>
-              <textarea class="form-control" [(ngModel)]="newEmployee.address" [ngModelOptions]="{standalone: true}" id="address" rows="3"></textarea>
-            </div>
-            <p>
-              <button type="button" class="btn btn-primary mr-2" (click)="saveEmployee(newEmployee)">Submit</button>
-              <button type="button" class="btn btn-warning" (click)="cancelNewEmployee()">Cancel</button>
-            </p>
-          </form> 
-  
-          <form *ngIf="editEmployeeForm">
-            <h2>Edit Employee Details</h2>
-            <div class="form-group">
-              <label for="employeeCode">Emp Code</label>
-              <input type="text" class="form-control" [(ngModel)]="editedEmployee.employeeCode" [ngModelOptions]="{standalone: true}" id="employeeCode"  placeholder="Employee Code">
-            </div>
-            <div class="form-group">
-              <label for="name"> Name</label>
-              <input type="text" class="form-control" [(ngModel)]="editedEmployee.name" [ngModelOptions]="{standalone: true}" id="name" placeholder="Employee name">
-            </div>
-            <div class="form-group">
-              <label for="department">Example Department</label>
-              <select class="form-control" [(ngModel)]="editedEmployee.department" [ngModelOptions]="{standalone: true}" id="department">
-                <option>Admin</option>
-                <option>Technology</option>
-                <option>Accounts</option>
-                <option>Development</option>
-              </select>
+            <div
+              [hidden]="department.valid || department.pristine"
+              class="alert alert-danger"
+            >
+              Department is required
             </div>
             <div class="form-group">
               <label for="name"> Gender</label>
               <div class="form-check">
-                <input class="form-check-input" [(ngModel)]="editedEmployee.gender" [ngModelOptions]="{standalone: true}" type="radio" name="exampleRadios" id="male" value="male" checked>
-                <label class="form-check-label" for="male">
-                  Male
-                </label>
-                <input class="form-check-input" [(ngModel)]="editedEmployee.gender" [ngModelOptions]="{standalone: true}" type="radio" name="exampleRadios" id="female" value="female">
-                <label class="form-check-label" for="female">
-                  Female
-                </label>
+                <input
+                  class="form-check-input"
+                  [(ngModel)]="employee.gender"
+                  [ngModelOptions]="{ standalone: true }"
+                  type="radio"
+                  name="exampleRadios"
+                  id="male"
+                  value="male"
+                  checked
+                />
+                <label class="form-check-label" for="male"> Male </label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input
+                  class="form-check-input"
+                  [(ngModel)]="employee.gender"
+                  [ngModelOptions]="{ standalone: true }"
+                  type="radio"
+                  name="exampleRadios"
+                  id="female"
+                  value="female"
+                />
+                <label class="form-check-label" for="female"> Female </label>
               </div>
             </div>
             <div class="form-group">
               <label for="name"> DOB</label>
-              <input type="date" class="form-control" [(ngModel)]="editedEmployee.dob" [ngModelOptions]="{standalone: true}" id="dob" placeholder="Employe DOB">
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="employee.dob"
+                [ngModelOptions]="{ standalone: true }"
+                id="dob"
+                placeholder="Employe DOB"
+                #dob="ngModel"
+                [ngClass]="{ 'is-invalid': dob.touched && dob.invalid }"
+                required
+              />
+            </div>
+            <div
+              [hidden]="dob.valid || dob.pristine"
+              class="alert alert-danger"
+            >
+              DOB is required
             </div>
             <div class="form-group">
               <label for="name"> Joining Date</label>
-              <input type="date" class="form-control" [(ngModel)]="editedEmployee.joiningDate" [ngModelOptions]="{standalone: true}" id="joiningDate" placeholder="Joining Date">
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="employee.joiningDate"
+                [ngModelOptions]="{ standalone: true }"
+                id="joiningDate"
+                placeholder="Joining Date"
+                #joiningDate="ngModel"
+                [ngClass]="{
+                  'is-invalid': joiningDate.touched && joiningDate.invalid
+                }"
+                required
+              />
+            </div>
+            <div
+              [hidden]="joiningDate.valid || joiningDate.pristine"
+              class="alert alert-danger"
+            >
+              Joining date is required
             </div>
             <div class="form-group">
-              <label for="previousExprience"> Previous Experience</label>
-              <input type="number" class="form-control" [(ngModel)]="editedEmployee.previousExprience" [ngModelOptions]="{standalone: true}" id="previousExprience" placeholder="Previous Experience">
+              <label for="previousExperince"> Previous Experience</label>
+              <input
+                type="number"
+                name="previousExperince"
+                class="form-control"
+                [(ngModel)]="employee.previousExperince"
+                [ngModelOptions]="{ standalone: true }"
+                id="previousExperince"
+                placeholder="Previous Experience"
+                #previousExperince="ngModel"
+                [ngClass]="{
+                  'is-invalid':
+                    previousExperince.touched && previousExperince.invalid
+                }"
+                required
+              />
             </div>
-  
+            <div
+              [hidden]="previousExperince.valid || previousExprience.pristine"
+              class="alert alert-danger"
+            >
+              Previous exprience is required
+            </div>
+
             <div class="form-group">
               <label for="name"> Salary</label>
-              <input type="number" class="form-control" id="salary" [(ngModel)]="editedEmployee.salary" [ngModelOptions]="{standalone: true}" placeholder="Salary">
+              <input
+                type="number"
+                class="form-control"
+                id="salary"
+                [(ngModel)]="employee.salary"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="salary"
+                #salary="ngModel"
+                [ngClass]="{ 'is-invalid': salary.touched && salary.invalid }"
+                required
+              />
             </div>
-  
+            <div
+              [hidden]="salary.valid || salary.pristine"
+              class="alert alert-danger"
+            >
+              Salary is required
+            </div>
+
             <div class="form-group">
               <label for="address">Address</label>
-              <textarea class="form-control" [(ngModel)]="editedEmployee.address" [ngModelOptions]="{standalone: true}" id="address" rows="3"></textarea>
+              <textarea
+                class="form-control"
+                [(ngModel)]="employee.address"
+                [ngModelOptions]="{ standalone: true }"
+                id="address"
+                rows="3"
+              ></textarea>
             </div>
             <p>
-              <button type="button" class="btn btn-primary mr-2" (click)="updateEmployee()">Submit</button>
-              <button type="button" class="btn btn-warning" (click)="cancelEdits()">Cancel</button>
+              <button
+                class="btn btn-primary mr-2"
+                [disabled]="!newForm.form.valid"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning"
+                (click)="cancelEmployee()"
+              >
+                Cancel
+              </button>
             </p>
           </form>
         </div>
-   
       </div>
     </div>
   </div>
